@@ -1,9 +1,16 @@
 describe('petstore api', () => {
+  it('log in user', () => {
+    cy.request('https://petstore.swagger.io/v2/user/login?username=username1&password=password1')
+      .then((response) => {
+      expect(response.status).to.be.eql(200)
+      })
+  })
+
   it('creates user with given input array', () => {
     cy.request({
       url: 'https://petstore.swagger.io/v2/user/createWithArray',
       method: 'POST',
-      body: {
+      body: [{
         "id": 1,
         "username": "username1",
         "firstName": "Ivan",
@@ -12,7 +19,7 @@ describe('petstore api', () => {
         "password": "password1",
         "phone": "",
         "userStatus": 0
-      }
+      }]
     }).then((response) => {
       expect(response.status).to.be.eql(200)
       expect(response.body).to.be.eql({
@@ -23,11 +30,31 @@ describe('petstore api', () => {
       })
   })
 
-  // it('log in user', () => {
-  //   cy.request('https://petstore.swagger.io/v2/user/login?username=username1&password=password1')
-  // }).then((response) => {
-  //   expect(response.status).to.be.eql(200)
-  //   })
+  it('updates user', () => {
+    cy.request({
+      url: 'https://petstore.swagger.io/v2/user/username1',
+      method: 'PUT',
+      body: {
+        "id": 1,
+        "username": "username1",
+        "firstName": "Ivan",
+        "lastName": "Ivanov",
+        "email": "updated@test.com",
+        "password": "password1",
+        "phone": "888",
+        "userStatus": 0 
+      }
+    }).then((response) => {
+      expect(response.status).to.eq(200)
+      expect(response.body).to.eq({
+        "code": 200,
+        "type": "unknown",
+        "message": "1"
+      })
+    })
+  })
+
+
   
   // it('create user', () => {
   //   cy.request({
