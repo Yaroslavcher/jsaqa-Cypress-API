@@ -1,0 +1,16 @@
+{
+  "name": "7-07-cypress2-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "./e2e/api.cy.js",
+    "dashboard": "npx cypress run --record --key 333515f0-c96b-4371-b6d7-50569f07530e"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cypress": "^12.4.1"
+  }
+}

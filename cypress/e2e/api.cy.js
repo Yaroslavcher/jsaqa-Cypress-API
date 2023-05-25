@@ -1,92 +1,34 @@
+import body from '../fixtures/body'
+
 describe('petstore api', () => {
   it('log in user', () => {
-    cy.request('https://petstore.swagger.io/v2/user/login?username=username1&password=password1')
+    cy.request(`/login?username=${body.user1.username}&password=${body.user1.password}`)
       .then((response) => {
       expect(response.status).to.be.eql(200)
       })
   })
 
-  it('creates user with given input array', () => {
-    cy.request({
-      url: 'https://petstore.swagger.io/v2/user/createWithArray',
-      method: 'POST',
-      body: [{
-        "id": 1,
-        "username": "username1",
-        "firstName": "Ivan",
-        "lastName": "Ivanov",
-        "email": "test@test.com",
-        "password": "password1",
-        "phone": "",
-        "userStatus": 0
-      }]
-    }).then((response) => {
-      expect(response.status).to.be.eql(200)
-      expect(response.body).to.be.eql({
-          "code": 200,
-          "type": "unknown",
-          "message": "ok"
-        })  
-      })
+  it('creates user', () => {
+    cy.createCommand(body.user1)
+  })
+
+  it('creates another user', () => {
+    cy.createCommand(body.user2)
   })
 
   it('updates user', () => {
-    cy.request({
-      url: 'https://petstore.swagger.io/v2/user/username1',
-      method: 'PUT',
-      body: {
-        "id": 1,
-        "username": "username1",
-        "firstName": "Ivan",
-        "lastName": "Ivanov",
-        "email": "updated@test.com",
-        "password": "password1",
-        "phone": "888",
-        "userStatus": 0 
-      }
-    }).then((response) => {
-      expect(response.status).to.eq(200)
-      expect(response.body).to.eq({
-        "code": 200,
-        "type": "unknown",
-        "message": "1"
-      })
-    })
+    cy.updateCommand(body.updatedUser2, "username2")
   })
 
+  it('updates not existed user', () => {
+    cy.updateCommand(body.notExistedUser, "username3")
+  })
 
-  
-  // it('create user', () => {
-  //   cy.request({
-  //     url: 'https://petstore.swagger.io/v2/user',
-  //     method: 'POST',
-  //     body: {
-  //       "id": 1,
-  //       "username": "username1",
-  //       "firstName": "Ivan",
-  //       "lastName": "Ivanov",
-  //       "email": "test@test.com",
-  //       "password": "password1",
-  //       "phone": "",
-  //       "userStatus": 0
-  //     }
-  //   }).then((response) => {
-  //     expect(response.status).to.be.eql(200)
-  //     expect(response.body).to.be.eql({
-  //         "code": 200,
-  //         "type": "unknown",
-  //         "message": "1"
-  //     })
+  it('deletes user', () => {
+    cy.deleteCommand("username1")
+  })
 
-  //     cy.request(`https://petstore.swagger.io/v2/user/${response.body.message}`)
-  //       .then((response) => {
-  //         expect(response.status).to.be.eql(200)
-  //         expect(response.body).to.be.eql({
-  //             "code": 200,
-  //             "type": "unknown",
-  //             "message": "123"
-  //         })
-  //       })
-  //   })
-  // })
+  it('deletes not existed user', () => {
+    cy.deleteCommand("username3")
+  })
 })
